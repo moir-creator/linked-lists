@@ -1,25 +1,20 @@
 #include<iostream>
 
 struct Node {
+
     int data;
     Node* next;
-    Node(int d, Node* n) : data (d), next(n) {}
 };
 
 Node* head = nullptr;
 
 void addFirst(int data) {
-    if (head == nullptr) {
-        head = new Node(data, nullptr);
-    } else {
-        Node* tmp = new Node(data, head);
-        head = tmp;
-    }
+    head = new Node(data, head);
 }
 
 void add(int data) {
     if (head == nullptr) {
-        head = new Node(data, nullptr);
+        head = new Node (data, nullptr);
     } else {
         Node* tmp = head;
         while (tmp->next != nullptr) {
@@ -29,41 +24,91 @@ void add(int data) {
     }
 }
 
+void addSorted() {
+    //как сортировка пузырьком bubblesort
+    //по возрастанию 1 .. 10
+}
+
+bool remove (int value) {
+    if (head == nullptr) {
+        return false;
+    }
+    if (head->data == value) {
+        Node* tmp = head->next;
+        delete head;
+        head = tmp;
+        return true;
+    }
+    Node* tmp = head;
+    while (tmp->next != nullptr) {
+        if (tmp->next->data == value) {
+            Node* t = tmp->next;
+            tmp->next = tmp->next->next;
+            delete t;
+            return true;
+        }
+        tmp = tmp->next;
+    }
+    return false;
+}
+
+bool removeAll(int value) {
+    //минимум двумя способами
+    // один способ в 1 строчку или во много строчек (подсказка - bool)
+}
+
+
 void output() {
     Node* tmp = head;
-    for ( ; tmp!= nullptr; tmp = tmp->next) {
-        std::cout << tmp->data << " ";
-    }
+    for ( ; tmp != nullptr; tmp = tmp->next) {
+      std::cout << tmp->data << " ";}
 }
 
-void distruct(int number) {
-    Node* prev = nullptr;
-    Node* tmp = head;
-    if (head->data == number) {
-        head = head->next;
-        delete tmp;
-    } else {
-        while (tmp != nullptr && tmp->data != number) {
-            prev = tmp;
-            tmp = tmp->next;
-        } if (tmp == nullptr) {
-            std::cout << "Value " << number << " not found" << std::endl;
-        } else {
-            prev->next = tmp->next;
-            delete tmp;
-        }
-    }
-}
+
+//+ 1. Сделать вывод отдельным методом output
+//2. Сделать метод addFirst (вставлять новые элементы в начало списка) вывод должен получится 3,2,1
+//3. Удаление по значению (сделать дистракт ячейки и сохранить целостность списка); методом remove
+//4.
 
 int main() {
-    
-    add(1);
-    add(2);
-    add(3);
-    add(4);
-    add(5);
 
+   addFirst(2);
+   addFirst(3);
+   addFirst(1);
+   /*addFirst(2);
+    addFirst(3);
+    addFirst(4);
+    addFirst(5);*/
+
+    remove(3);
     output();
+
+    //2 шаг
+    /*Node* first = new Node (1, nullptr);
+   head = first;
+
+   Node* second = new Node (2, nullptr);
+   head = second;
+   second->next = first;
+
+   Node* third = new Node (3, nullptr);
+   head = third;
+   third->next = second;*/
+
+    //1 шаг
+    /*Node first = {1, nullptr};
+    head = &first;
+
+    Node second = {2, nullptr};
+    head = &second;
+    second.next = &first;
+
+    Node third = {3, nullptr};
+    head = &third;
+    third.next = &second;*/
+
+
+
 
     return 0;
 }
