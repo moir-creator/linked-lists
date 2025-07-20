@@ -24,10 +24,18 @@ void add(int data) {
     }
 }
 
-void addSorted() {
+/*void addSorted() {
     //как сортировка пузырьком bubblesort
     //по возрастанию 1 .. 10
-}
+    Node* tmp = head;
+    while (tmp != nullptr) {
+        if (tmp->data > tmp->next->data) {
+         Node* tmp = tmp->next;
+
+        }
+
+    }
+}*/
 
 bool remove (int value) {
     if (head == nullptr) {
@@ -52,7 +60,25 @@ bool remove (int value) {
     return false;
 }
 
-bool removeAll(int value) {
+bool removeAll (int value) {
+    if (head == nullptr) {
+        return false;
+    }
+    if (head->data == value) {
+        Node* tmp = head->next;
+        delete head;
+        head = tmp;
+    }
+    Node* tmp = head;
+    while (tmp->next != nullptr) {
+        if (tmp->next->data == value) {
+            Node* t = tmp->next;
+            tmp->next = tmp->next->next;
+            delete t;
+        }
+        tmp = tmp->next;
+    }
+    return true;
     //минимум двумя способами
     // один способ в 1 строчку или во много строчек (подсказка - bool)
 }
@@ -72,43 +98,17 @@ void output() {
 
 int main() {
 
-   addFirst(2);
-   addFirst(3);
-   addFirst(1);
-   /*addFirst(2);
-    addFirst(3);
-    addFirst(4);
-    addFirst(5);*/
+   add(7);
+   add(1);
+   add(2);
+   add(7);
+   add(3);
+   add(4);
+   add(7);
+   add(5);
 
-    remove(3);
+    removeAll(7);
     output();
-
-    //2 шаг
-    /*Node* first = new Node (1, nullptr);
-   head = first;
-
-   Node* second = new Node (2, nullptr);
-   head = second;
-   second->next = first;
-
-   Node* third = new Node (3, nullptr);
-   head = third;
-   third->next = second;*/
-
-    //1 шаг
-    /*Node first = {1, nullptr};
-    head = &first;
-
-    Node second = {2, nullptr};
-    head = &second;
-    second.next = &first;
-
-    Node third = {3, nullptr};
-    head = &third;
-    third.next = &second;*/
-
-
-
 
     return 0;
 }
