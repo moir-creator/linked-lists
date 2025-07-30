@@ -23,7 +23,54 @@ void add(int data) {
     }
 }
 
-void addSorted() {
+void addSorted(int data) {
+
+    if (head == nullptr) {
+        head = new Node (data, nullptr);
+        return;
+    }
+
+    if (data < head->data) {
+        head = new Node (data, head);
+        std::cout << "head value: " << data << std::endl;
+        return;
+    }
+    /*std::cout << "head: " << head->data << std::endl;
+    std::cout << "head->next: " << head->next->data << std::endl;*/
+    std::cout << "value: " << data << std::endl;
+
+    Node* tmp = head;
+    Node* prev = nullptr;
+
+    while (tmp->next != nullptr) {
+        if (tmp->data < data) {
+            prev = tmp;
+            tmp = tmp->next;
+            /*std::cout << "prev: " << prev->data << std::endl;
+            std::cout << "prev->next: " << prev->next->data << std::endl;
+            std::cout << "tmp: " << tmp->data << std::endl;*/
+        }
+        /*std::cout << "cycle is done" << std::endl;
+        std::cout << "tmp->data: " << tmp->data << std::endl;*/
+    }
+    //std::cout << "out of cycle: " << std::endl;
+    if (data > tmp->data && tmp->next != nullptr) {
+        tmp->next = new Node (data, tmp->next);
+        //std::cout << "!= nullptr" << std::endl;
+        return;
+    }
+    if (data > tmp->data && tmp->next == nullptr) {
+        tmp->next = new Node (data, nullptr);
+        //std::cout << "== nullptr" << std::endl;
+        return;
+    }
+    if (data < tmp->data) {
+        prev->next = new Node (data, prev->next);
+        return;
+    }
+}
+
+void Sorted() {
    //сортировка элементов списка по их значению
 
    Node* tmp = head;
@@ -157,28 +204,36 @@ void output() {
 //4.
 
 int main() {
+    //список для проверки меотда removeAll:
+    /*add(7);
+    add(1);
+    add(2);
+    add(7);
+    add(3);
+    add(4);
+    add(7);
+    add(5);*/
 
-   //список для проверки меотда removeAll:
-   /*add(7);
-   add(1);
-   add(2);
-   add(7);
-   add(3);
-   add(4);
-   add(7);
-   add(5);*/
+    /*add(6);
+    add(2);
+    add(7);
+    add(3);
+    add(1);
+    add(4);
+    add(5);
+    add(9);
+    add(8);*/
 
-   add(6);
-   add(2);
-   add(7);
-   add(3);
-   add(1);
-   add(4);
-   add(5);
-   add(9);
-   add(8);
-
-    addSorted();
+    addSorted(5);
+    addSorted(3);
+    addSorted(4);
+    addSorted(6);
+    addSorted(8);
+    addSorted(1);
+    addSorted(14);
+    addSorted(10);
+    //addSorted(2);
+    //addSorted(16);
     //removeAll(7);
     output();
 
