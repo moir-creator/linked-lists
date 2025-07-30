@@ -29,19 +29,13 @@ void addSorted(int data) {
         head = new Node (data, nullptr);
         return;
     }
-
     if (data < head->data) {
         head = new Node (data, head);
         std::cout << "head value: " << data << std::endl;
         return;
     }
-    /*std::cout << "head: " << head->data << std::endl;
-    std::cout << "head->next: " << head->next->data << std::endl;*/
-    std::cout << "value: " << data << std::endl;
-
     Node* tmp = head;
     Node* prev = nullptr;
-
     while (tmp->next != nullptr) {
         if (tmp->data < data) {
             prev = tmp;
