@@ -50,7 +50,6 @@ void bubleSort_() {
     head = nullptr;
     while (tmp != nullptr) {
     addSorted(tmp->data);
-        //tmp->prev = tmp;
         tmp = tmp->next;
     }
 }
