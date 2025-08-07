@@ -1,11 +1,15 @@
 #include<iostream>
-
 struct Node {
     int data;
     Node* next;
 };
 
+// 1. сделать 2 списка с двумя head
+// 2. объединить два списка в один
+// 3. объединить с сортировкой
+
 Node* head = nullptr;
+Node* headTwo = nullptr;
 
 void addFirst(int data) {
     head = new Node(data, head);
@@ -23,119 +27,63 @@ void add(int data) {
     }
 }
 
-void addSorted(int data) {
+void addSorted(int value) {
 
     if (head == nullptr) {
-        head = new Node (data, nullptr);
+        head = new Node (value, nullptr);
         return;
     }
-    if (data < head->data) {
-        head = new Node (data, head);
-        std::cout << "head value: " << data << std::endl;
+    if (value < head->data) {
+        head = new Node (value, head);
         return;
     }
+    Node* tmp = head->next;
+    Node* prev = head;
+    while (tmp != nullptr && tmp->data < value) {
+        prev = tmp;
+        tmp = tmp->next;
+    }
+    tmp = new Node (value, prev->next);
+    prev->next = tmp;
+}
+
+void bubleSort_() {
     Node* tmp = head;
-    Node* prev = nullptr;
-    while (tmp->next != nullptr) {
-        if (tmp->data < data) {
-            prev = tmp;
-            tmp = tmp->next;
-            /*std::cout << "prev: " << prev->data << std::endl;
-            std::cout << "prev->next: " << prev->next->data << std::endl;
-            std::cout << "tmp: " << tmp->data << std::endl;*/
-        }
-        /*std::cout << "cycle is done" << std::endl;
-        std::cout << "tmp->data: " << tmp->data << std::endl;*/
-    }
-    //std::cout << "out of cycle: " << std::endl;
-    if (data > tmp->data && tmp->next != nullptr) {
-        tmp->next = new Node (data, tmp->next);
-        //std::cout << "!= nullptr" << std::endl;
-        return;
-    }
-    if (data > tmp->data && tmp->next == nullptr) {
-        tmp->next = new Node (data, nullptr);
-        //std::cout << "== nullptr" << std::endl;
-        return;
-    }
-    if (data < tmp->data) {
-        prev->next = new Node (data, prev->next);
-        return;
+    head = nullptr;
+    while (tmp != nullptr) {
+        addSorted(tmp->data);
+        Node* t = tmp;
+        tmp = tmp->next;
+        delete t;
     }
 }
 
-void Sorted() {
-   //сортировка элементов списка по их значению
-
-   Node* tmp = head;
-   Node* m = head;
-   Node* prev = nullptr;
-   //поиск самого минимального значения, и его отдельное сохранение
-   while (tmp->next != nullptr) {
-       if (tmp->next->data < m->data) {
-           prev = tmp;
-           m = tmp->next;
-       }
-       tmp = tmp->next;
-   }
-    //назначаем в head минимальный элемент списка сохраняя целостность списка
-   prev->next = prev->next->next;
-   m->next = head;
-   head = m;
-
-   //новый цикл для сортировки тела списка
-   tmp = head;
-   prev = head;
-   m = head;
-   Node* maximum = nullptr;
-   Node* maximum2 = nullptr;
-
-   //вывод на экран для самопроверки:
-   /*std::cout << "tmp->data: " << tmp->data << std::endl;
-   std::cout << "tmp->next->data: " << tmp->next->data << std::endl;
-   std::cout << "preview value: " << prev->data << std::endl;*/
-
-   while (tmp->next->next != nullptr) {
-       if (tmp->data > tmp->next->data) {
-               m = tmp->next;
-               maximum = tmp;
-               maximum2 = tmp->next->next;
-               prev->next = m;
-               m->next = maximum;
-               maximum->next = maximum2;
-
-               tmp = head;
-
-               //вывод значений внутри цикла для самоконтроля
-               std::cout << "preview next: " << prev->next->data << std::endl;
-               std::cout << "maximum next after: " << maximum->next->data << std::endl;
-
-               std::cout << "minimal value: " << m->data << std::endl;
-               std::cout << "preview value: " << prev->data << std::endl;
-               //return для отслеживания первой итерации и порядка связывания элементов:
-               //return;
-           }
-           prev = tmp;
-           tmp = tmp->next;
-           std::cout << "exit->tmp->next->data: " << tmp->next->data << std::endl;
-   }
-            //проверка вывода итераций после выхода из цикла, tmp находится на последних элементах
-            std::cout << "FINAL exit->tmp->data: " << tmp->data << std::endl;
-            std::cout << "FINAL exit->tmp->next->data: " << tmp->next->data << std::endl;
-		    std::cout << "FINAL preview value: " << prev->data << std::endl;
-
-   //работа с конечными элементами списка, где tmp->next == nullptr;
-   if (tmp->data > tmp->next->data) {
-			    maximum = tmp;
-				m = tmp->next;
-
-			    prev->next = tmp->next;
-				tmp->next = nullptr;
-				prev->next->next = tmp;
-                //контрольный вывод tmp для определения его точного значения
-				std::cout << "exit->tmp->data: " << tmp->data << std::endl;
-			    std::cout << "cycle nullptr is done  " << std::endl;
-		   }
+void bubleSort() {
+    if (head == nullptr || head->next == nullptr) {
+        return;
+    }
+    bool changed = true;
+    while (changed) {
+        changed = false;
+        if (head->data > head->next->data) {
+            Node* tmp = head;
+            head = head->next;
+            tmp->next = head->next;
+            head->next = tmp;
+            changed = true;
+        }
+        Node* tmp = head;
+        while (tmp->next != nullptr && tmp->next->next != nullptr) {
+            if (tmp->next->data > tmp->next->next->data) {
+                Node* t = tmp->next;
+                tmp->next = tmp->next->next;
+                t->next = tmp->next->next;
+                tmp->next->next = t;
+                changed = true;
+            }
+            tmp = tmp->next;
+        }
+    }
 }
 
 bool remove (int value) {
@@ -161,75 +109,138 @@ bool remove (int value) {
     return false;
 }
 
+void removeAll2 (int value) {
+   while (remove(value));
+}
+
 bool removeAll (int value) {
+    bool result = false;
     if (head == nullptr) {
-        return false;
+        return result;
     }
-    if (head->data == value) {
+    while (head !=nullptr && head->data == value) {
+        result = true;
         Node* tmp = head->next;
         delete head;
         head = tmp;
     }
+    if (head == nullptr) {
+        return result;
+    }
     Node* tmp = head;
-    while (tmp->next != nullptr) {
-        if (tmp->next->data == value) {
+    while (tmp != nullptr) {
+        if (tmp->next != nullptr && tmp->next->data == value) {
+            result = true;
             Node* t = tmp->next;
             tmp->next = tmp->next->next;
             delete t;
         }
         tmp = tmp->next;
     }
-    return true;
-    //минимум двумя способами
-    // один способ в 1 строчку или во много строчек (подсказка - bool)
+    return result;
 }
 
 
 void output() {
     Node* tmp = head;
+    std::cout << "list One: ";
     for ( ; tmp != nullptr; tmp = tmp->next) {
       std::cout << tmp->data << " ";}
+    std::cout << std::endl;
 }
 
+void outputTwo() {
+    Node* tmp = headTwo;
+    std::cout << "list Two: ";
+    for ( ; tmp != nullptr; tmp = tmp->next) {
+        std::cout << tmp->data << " ";}
+    std::cout << std::endl;
+}
 
-//+ 1. Сделать вывод отдельным методом output
-//2. Сделать метод addFirst (вставлять новые элементы в начало списка) вывод должен получится 3,2,1
-//3. Удаление по значению (сделать дистракт ячейки и сохранить целостность списка); методом remove
-//4.
+void addTwo(int data) {
+    if (headTwo == nullptr) {
+        headTwo = new Node (data, nullptr);
+    } else {
+        Node* tmp = headTwo;
+        while (tmp->next != nullptr) {
+            tmp = tmp->next;
+        }
+        tmp->next = new Node (data, nullptr);
+    }
+}
+
+void join() {
+    Node* tmp = head;
+    while (tmp->next != nullptr) {
+        tmp = tmp->next;
+    }   tmp->next = headTwo;
+        headTwo = nullptr;
+}
+
+void joinSorted() {
+    join();
+    bubleSort_();
+    }
 
 int main() {
-    //список для проверки меотда removeAll:
-    /*add(7);
-    add(1);
-    add(2);
-    add(7);
-    add(3);
-    add(4);
-    add(7);
-    add(5);*/
 
-    /*add(6);
-    add(2);
-    add(7);
-    add(3);
-    add(1);
-    add(4);
-    add(5);
     add(9);
-    add(8);*/
+    add(7);
+    add(3);
+    add(5);
 
-    addSorted(5);
+    addTwo(19);
+    addTwo(15);
+    addTwo(17);
+    addTwo(13);
+
+    output();
+    outputTwo();
+    joinSorted();
+    output();
+
+    /*join();
+    std::cout << "Join is done!" << std::endl;
+    output();
+    bubleSort();
+    std::cout << "Sort is done!" << std::endl;
+    output();*/
+
+   //список для проверки меотда removeAll:
+   /*add(7);
+   add(1);
+   add(3);
+   add(7);
+   add(3);
+   add(4);
+   add(3);
+   add(5);
+   removeAll2(3);//*/
+
+   /*
+   add(4);
+   add(7);
+   add(3);
+   add(5);
+   add(2);
+   add(6);
+   add(1);
+   bubleSort();
+   */
+
+    /*addSorted(1);
     addSorted(3);
     addSorted(4);
+    addSorted(2);
     addSorted(6);
     addSorted(8);
     addSorted(1);
     addSorted(14);
     addSorted(10);
-    //addSorted(2);
-    //addSorted(16);
-    //removeAll(7);
-    output();
+    addSorted(2);
+    addSorted(16);*/
+
+    //std::cout << removeAll(6) << std::endl;
 
     return 0;
 }
