@@ -157,6 +157,11 @@ void outputTwo() {
     std::cout << std::endl;
 }
 
+void copyList() {
+    headTwo = head;
+    head = nullptr;
+}
+
 void addTwo(int data) {
     if (headTwo == nullptr) {
         headTwo = new Node (data, nullptr);
@@ -168,6 +173,7 @@ void addTwo(int data) {
         tmp->next = new Node (data, nullptr);
     }
 }
+
 
 void join() {
     Node* tmp = head;
@@ -188,23 +194,23 @@ int main() {
     add(7);
     add(3);
     add(5);
+    copyList();
 
-    addTwo(19);
-    addTwo(15);
-    addTwo(17);
-    addTwo(13);
+    add(19);
+    add(15);
+    add(17);
+    add(13);
 
     output();
     outputTwo();
-    joinSorted();
-    output();
 
-    /*join();
-    std::cout << "Join is done!" << std::endl;
+    joinSorted();
+    //std::cout << "Join is done!" << std::endl;
     output();
-    bubleSort();
-    std::cout << "Sort is done!" << std::endl;
-    output();*/
+    outputTwo();
+    //bubleSort();
+    //std::cout << "Sort is done!" << std::endl;
+    //output();
 
    //список для проверки меотда removeAll:
    /*add(7);
