@@ -1,0 +1,72 @@
+#include <iostream>
+
+struct Node {
+    Node* left;
+    int data;
+    Node* right;
+};
+
+Node* head = nullptr;
+
+void add(int data) {
+    if (head == nullptr) {
+        head = new Node(nullptr, data, nullptr);
+        return;
+    }
+
+    Node* tmp = head;
+    Node* prev = nullptr;
+    while (tmp != nullptr) {
+        if (data > tmp->data) {
+            prev = tmp;
+            tmp = tmp->right;
+        }
+        else {
+            prev = tmp;
+            tmp = tmp->left;
+        }
+    }
+    if (data > prev->data) {
+        prev->right = new Node(nullptr, data, nullptr);
+    }
+    else {
+        prev->left = new Node(nullptr, data, nullptr);
+    }
+}
+
+
+void output() {
+    Node* tmp = head->left;
+    Node* prev = nullptr;
+    while (tmp->left != nullptr && tmp->right != nullptr) {
+            prev = tmp;
+            tmp = tmp->left;
+    }
+    std::cout << prev->left->data << " <-" << " " << prev->data << " " << "-> " << prev->right->data << " <-- left ";
+
+    std::cout << head->data;
+
+    tmp = head->right;
+    while (tmp->left != nullptr && tmp->right != nullptr) {
+        prev = tmp;
+        tmp = tmp->right;
+    }
+    std::cout << " right --> " << prev->left->data << " <-" << " " << prev->data << " " << "-> " << prev->right->data;
+}
+
+//создать добавление элемента в дерево (меньший влево, больший вправо);
+//подумать над выводом (рекурсия);
+//stekoverflow
+
+int main() {
+    add(10);
+    add(8);
+    add(9);
+    add(14);
+    add(12);
+    add(16);
+    add(4);
+
+    output();
+    return 0;
+}
