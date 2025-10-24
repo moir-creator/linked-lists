@@ -1,1 +1,1 @@
-# cpp
+This is my first project on GitHub, where I learned to write code for singly and doubly linked lists. Unfortunately, I wasn't very proficient with Git back then, and instead of successfully committing, I ended up copy-pasting the code manually. But I'll be doing a similar project in Java soon, with structured version control.
